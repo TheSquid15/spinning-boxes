@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning boxes</title>
+</head>
+<body onload="draw()">
+    <canvas id="canvas">
+
+    </canvas>
+    <button onClick="fuckingStop()">STOP!!!!</button>
+    <script>
+        var can = document.getElementById('canvas').getContext('2d');
+
+        var rotation = 0;
+        var newRandomColor = null;
+        var createBox = null;
+
+        function draw() {
+
+            //Save the initial canvas
+            can.save();
+            //Make the first box
+            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+            can.fillStyle = `#${randomColor}`;
+            can.fillRect(150, 30, 100, 100);
+
+            //Draw and rotate the second box and put it on top of the other one
+            createBox = setInterval(function() {
+                var newRandomColor = Math.floor(Math.random()*16777215).toString(16);
+                rotation += 1;
+
+                can.translate(200, 80);
+                can.rotate((Math.PI / 180) * rotation);
+                can.translate(-200, -80);
+                can.fillStyle = `#${newRandomColor}`;
+                can.fillRect(150, 30, 100, 100);
+
+                //check if rotation exceeds 180, if so reset it to 0 to counteract the tapering effect.
+                if(rotation <= 180) {
+                    rotation = 0;
+                }
+            }, 10);
+        }
+
+        function fuckingStop() {
+            clearInterval(createBox);
+        }
+    </script>
+</body>
+</html>
